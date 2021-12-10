@@ -1,37 +1,158 @@
-## Welcome to GitHub Pages
+## Pandas学习笔记
 
-You can use the [editor on GitHub](https://github.com/406574036/MyBlog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### 官方文档
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+[Pandas官方文档](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html)
 
-### Markdown
+### 读入文件
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+1. 导入CSV数据
 
-```markdown
-Syntax highlighted code block
+   ```python
+   fwdata=pd.read_csv($filename, engine='python', header=None)
+   ```
 
-# Header 1
-## Header 2
-### Header 3
+   1. engine='python'  # 解决csv中文
+   2. header=None # 解决没有列名
 
-- Bulleted
-- List
+2. 导入Execl数据e
 
-1. Numbered
-2. List
+   ``` shell
+   fwdata=pd.read_excel('$filename', sheet_name='$表名')
+   ```
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
+1. d
+
+### 列名操作
+
+1. 增加列名
+
+   ```python
+   fwdata.columns = ['ip','gwip','model','location']
+   ```
+
+2. 修改列名
+
+   ``` shell
+   fwdata.rename(columns={'ip'：'gwip','model'：'locatio},inplace=True')
+   ```
+
+3. 
+
+### 查找索引值
+
+``` python
+fwdata[fwdata.model == 'USG6630'].index
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+### 查找数据
 
-### Jekyll Themes
+1. 根据文本内容查找
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/406574036/MyBlog/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+   ``` python
+   fwdata.loc[fwdata['列名'].str.contains('廊坊')]
+   ```
 
-### Support or Contact
+2. 列内查找制定值
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+   ``` python
+   fwdata.loc[fwdata['列名'] == '值']
+   ```
+
+3. 查找数据并根据数据列值，添加新列并指定值。 i 为自定义字符串
+
+   ``` python
+   fwdata['duanwei'] = fwdata.model.apply(lambda x: "低端" if i in x else "高端")
+   ```
+
+4. 查找并赋值 & 为and关系
+
+   ```python
+   pd.loc[(pd[klist[1]]==trust_list[nu][klist[1]])&(pd[klist[0]]==trust_list[nu][klist[0]])&(pd.isna(pd['vuln_status'])==True),'vuln_status'] = status
+   ```
+
+5. 的
+
+6. 
+
+### 查找重复项
+
+``` python
+fwdata[~fwdata.duplicated(subset = ['ip'],keep=False)]
+```
+
+1. subset指定查找列 
+
+2. keep=Falsh。keep参数默认为First，除第一次出现的数据，其他重复的数据都标记为True；如果想要获取所有重复的数据，将keep的值赋值为False。
+
+3. ~ 获取不重复的行
+
+   ``` pytho
+    
+   ```
+
+### 删除特定行
+
+``` python
+# 删除Port列值等于零
+fwdata = fwdata.drop(data[data['Port']==0].index)
+```
+
+### 查询数据类型
+
+1. 查询数据类型
+
+   ```python
+   print(fwdata.dtypes)
+   ```
+
+2. 查询行数
+
+   ``` python
+   print(data.shape)
+   ```
+
+3. 的
+
+### 删除重复
+
+1. 删除列
+
+``` python
+fwdata.drop_duplicated(subset = ['ip'])
+```
+
+
+
+### 增加数据
+
+``` python
+fwdata = fwdata.append(new,ignore_index=True)
+```
+
+### 修改数据
+
+1. 修改列名
+2. 删除
+
+### 合并数据
+
+使用concat将含有相同列的表合并在一起
+
+``` python
+# 将相同列的多个pd合并成一个列表
+frames = [df1, df2, df3]
+# 合并列表
+result = pd.concat(frames)
+# 可以整key识别数据来自于哪张表
+result = pd.concat(frames, keys=['x', 'y', 'z'])
+```
+
+使用merge用数据库样式合并dataframe
+
+``` python
+pd.merge(swapdata,pdata,how='inner',on='主键')
+```
+
+
